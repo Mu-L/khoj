@@ -1355,7 +1355,7 @@ export default function SettingsView() {
                                                 </CardHeader>
                                                 <CardContent className="overflow-hidden">
                                                     <p className="pb-4 text-gray-400">
-                                                        This will delete all your account data, including conversations, agents, and any assets you've generated. Be sure to export before you do this if you want to keep your information.
+                                                        This will delete all your account data, including conversations, agents, and any assets you{"'"}ve generated. Be sure to export before you do this if you want to keep your information.
                                                     </p>
                                                 </CardContent>
                                                 <CardFooter className="flex flex-wrap gap-4">
