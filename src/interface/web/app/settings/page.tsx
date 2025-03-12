@@ -22,6 +22,10 @@ import {
     DropdownMenuRadioItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 import {
@@ -55,6 +59,7 @@ import {
     EyeSlash,
     Eye,
     Download,
+    TrashSimple,
 } from "@phosphor-icons/react";
 
 import Loading from "../components/loading/loading";
@@ -1340,6 +1345,72 @@ export default function SettingsView() {
                                                         <Download className="h-5 w-5 mr-2" />
                                                         {isExporting ? "Exporting..." : "Export Chats"}
                                                     </Button>
+                                                </CardFooter>
+                                            </Card>
+
+                                            <Card className={cardClassName}>
+                                                <CardHeader className="text-xl flex flex-row">
+                                                    <TrashSimple className="h-7 w-7 mr-2 text-red-500" />
+                                                    Delete Account
+                                                </CardHeader>
+                                                <CardContent className="overflow-hidden">
+                                                    <p className="pb-4 text-gray-400">
+                                                        This will delete all your account data, including conversations, agents, and any assets you've generated. Be sure to export before you do this if you want to keep your information.
+                                                    </p>
+                                                </CardContent>
+                                                <CardFooter className="flex flex-wrap gap-4">
+                                                    <AlertDialog>
+                                                        <AlertDialogTrigger asChild>
+                                                            <Button
+                                                                variant="outline"
+                                                                className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                                                            >
+                                                                <TrashSimple className="h-5 w-5 mr-2" />
+                                                                Delete Account
+                                                            </Button>
+                                                        </AlertDialogTrigger>
+                                                        <AlertDialogContent>
+                                                            <AlertDialogHeader>
+                                                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                                                <AlertDialogDescription>
+                                                                    This action is irreversible. This will permanently delete your account
+                                                                    and remove all your data from our servers.
+                                                                </AlertDialogDescription>
+                                                            </AlertDialogHeader>
+                                                            <AlertDialogFooter>
+                                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                                <AlertDialogAction
+                                                                    className="bg-red-500 hover:bg-red-600"
+                                                                    onClick={async () => {
+                                                                        try {
+                                                                            const response = await fetch('/api/self', {
+                                                                                method: 'DELETE'
+                                                                            });
+                                                                            if (!response.ok) throw new Error('Failed to delete account');
+
+                                                                            toast({
+                                                                                title: "Account Deleted",
+                                                                                description: "Your account has been successfully deleted.",
+                                                                            });
+
+                                                                            // Redirect to home page after successful deletion
+                                                                            window.location.href = "/";
+                                                                        } catch (error) {
+                                                                            console.error('Error deleting account:', error);
+                                                                            toast({
+                                                                                title: "Error",
+                                                                                description: "Failed to delete account. Please try again or contact support.",
+                                                                                variant: "destructive"
+                                                                            });
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <TrashSimple className="h-5 w-5 mr-2" />
+                                                                    Delete Account
+                                                                </AlertDialogAction>
+                                                            </AlertDialogFooter>
+                                                        </AlertDialogContent>
+                                                    </AlertDialog>
                                                 </CardFooter>
                                             </Card>
                                         </div>
