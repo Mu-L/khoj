@@ -25,13 +25,13 @@ def index(request: Request):
     if not state.anonymous_mode and not request.user.is_authenticated:
         if "v" not in request.query_params:
             return RedirectResponse(url="/home")
-    return templates.TemplateResponse("index.html", context={"request": request})
+    return templates.TemplateResponse(name="index.html", context={"request": request})
 
 
 @web_client.post("/", response_class=FileResponse)
 @requires(["authenticated"], redirect="login_page")
 def index_post(request: Request):
-    return templates.TemplateResponse("index.html", context={"request": request})
+    return templates.TemplateResponse(name="index.html", context={"request": request})
 
 
 @web_client.get("/home", response_class=HTMLResponse)
@@ -40,7 +40,7 @@ def home_page(request: Request):
     # If user is authenticated, redirect to main app
     if request.user.is_authenticated:
         return RedirectResponse(url="/")
-    return home_templates.TemplateResponse("index.html", context={"request": request})
+    return home_templates.TemplateResponse(name="index.html", context={"request": request})
 
 
 @web_client.get("/home/{file_path:path}", response_class=FileResponse)
@@ -56,7 +56,7 @@ def home_static_files(file_path: str):
 @requires(["authenticated"], redirect="login_page")
 def search_page(request: Request):
     return templates.TemplateResponse(
-        "search/index.html",
+        name="search/index.html",
         context={
             "request": request,
         },
@@ -67,7 +67,7 @@ def search_page(request: Request):
 @requires(["authenticated"], redirect="login_page")
 def chat_page(request: Request):
     return templates.TemplateResponse(
-        "chat/index.html",
+        name="chat/index.html",
         context={
             "request": request,
         },
@@ -88,7 +88,7 @@ def login_page(request: Request):
 @web_client.get("/agents", response_class=HTMLResponse)
 def agents_page(request: Request):
     return templates.TemplateResponse(
-        "agents/index.html",
+        name="agents/index.html",
         context={
             "request": request,
         },
@@ -98,7 +98,7 @@ def agents_page(request: Request):
 @web_client.get("/settings", response_class=HTMLResponse)
 @requires(["authenticated"], redirect="login_page")
 def config_page(request: Request):
-    return templates.TemplateResponse("settings/index.html", context={"request": request})
+    return templates.TemplateResponse(name="settings/index.html", context={"request": request})
 
 
 @web_client.get("/settings/content/github", response_class=HTMLResponse)
@@ -128,13 +128,13 @@ def github_config_page(request: Request):
         current_config = {}  # type: ignore
 
     user_config["current_config"] = current_config
-    return templates.TemplateResponse("content_source_github_input.html", context=user_config)
+    return templates.TemplateResponse(name="content_source_github_input.html", context=user_config)
 
 
 @web_client.get("/share/chat/{public_conversation_slug}", response_class=HTMLResponse)
 def view_public_conversation(request: Request):
     return templates.TemplateResponse(
-        "share/chat/index.html",
+        name="share/chat/index.html",
         context={
             "request": request,
         },
@@ -146,7 +146,7 @@ def automations_config_page(
     request: Request,
 ):
     return templates.TemplateResponse(
-        "automations/index.html",
+        name="automations/index.html",
         context={
             "request": request,
         },
@@ -160,4 +160,4 @@ def assetlinks(request: Request):
 
 @web_client.get("/server/error", response_class=HTMLResponse)
 def server_error_page(request: Request):
-    return templates.TemplateResponse("error.html", context={"request": request})
+    return templates.TemplateResponse(name="error.html", context={"request": request})
